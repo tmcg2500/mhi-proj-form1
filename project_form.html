@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MHI Capital Project Form</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+    }
+    .form-section {
+      margin-bottom: 25px;
+    }
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 5px;
+      margin-top: 15px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-right: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .logo img {
+      max-width: 150px;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo">
+    <img src="logo.jpg" alt="MHI Capital Logo" />
+  </div>
+  <h1>MHI Capital Project Collaboration Form</h1>
+
+  <form id="projectForm">
+    <div class="form-section">
+      <label for="initiative">Business Initiative</label>
+      <input type="text" id="initiative" />
+    </div>
+
+    <div class="form-section">
+      <label for="responsible">Responsible Person</label>
+      <input type="text" id="responsible" />
+    </div>
+
+    <div class="form-section">
+      <label for="description">Description / Scope</label>
+      <textarea id="description" rows="3"></textarea>
+    </div>
+
+    <div class="form-section">
+      <label for="dates">Important Dates</label>
+      <input type="text" id="dates" />
+    </div>
+
+    <div class="form-section">
+      <label for="tasks">Deliverables / Tasks / Status Updates</label>
+      <textarea id="tasks" rows="4"></textarea>
+    </div>
+
+    <div class="form-section">
+      <label for="contacts">Key Contacts</label>
+      <textarea id="contacts" rows="4"></textarea>
+    </div>
+
+    <div class="form-section">
+      <label for="filledBy">Your Name</label>
+      <input type="text" id="filledBy" />
+    </div>
+
+    <button type="button" onclick="exportToCSV()">Export to Excel</button>
+    <button type="button" onclick="sendEmail()">Send via Email</button>
+    <button type="button" onclick="shareWhatsApp()">Share via WhatsApp</button>
+  </form>
+
+  <script>
+    function exportToCSV() {
+      const fields = ['initiative', 'responsible', 'description', 'dates', 'tasks', 'contacts', 'filledBy'];
+      let csvContent = "data:text/csv;charset=utf-8,Field,Value\n";
+      fields.forEach(id => {
+        const value = document.getElementById(id).value.replace(/\n/g, ' ');
+        csvContent += `${id},${value}\n`;
+      });
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "project_form_data.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function sendEmail() {
+      const body = `
+===== MHI Capital Project Collaboration Form =====
+
+Business Initiative:
+${document.getElementById('initiative').value}
+
+Responsible Person:
+${document.getElementById('responsible').value}
+
+Description / Scope:
+${document.getElementById('description').value}
+
+Important Dates:
+${document.getElementById('dates').value}
+
+Deliverables / Tasks / Status Updates:
+${document.getElementById('tasks').value}
+
+Key Contacts:
+${document.getElementById('contacts').value}
+
+Submitted By:
+${document.getElementById('filledBy').value}
+`;
+
+      window.location.href = "mailto:?subject=Project Form Submission&body=" + encodeURIComponent(body);
+    }
+
+    function shareWhatsApp() {
+      const message = `*MHI Capital Project Collaboration Form*\n\n` +
+        `*Business Initiative:*\n${document.getElementById('initiative').value}\n\n` +
+        `*Responsible Person:*\n${document.getElementById('responsible').value}\n\n` +
+        `*Description / Scope:*\n${document.getElementById('description').value}\n\n` +
+        `*Important Dates:*\n${document.getElementById('dates').value}\n\n` +
+        `*Deliverables / Tasks / Status Updates:*\n${document.getElementById('tasks').value}\n\n` +
+        `*Key Contacts:*\n${document.getElementById('contacts').value}\n\n` +
+        `*Submitted By:*\n${document.getElementById('filledBy').value}`;
+
+      const whatsappURL = `https://wa.me/?text=${encodeURIComponent(message)}`;
+      window.open(whatsappURL, '_blank');
+    }
+  </script>
+</body>
+</html>
